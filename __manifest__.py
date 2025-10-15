@@ -24,7 +24,6 @@
         'data/company_imported_data_combined.xml',
         'views/company_info_views.xml',
         'views/company_phone_views.xml',
-        'security/company_phone_access.csv',
         'data/company_phones_data.xml',
         'data/fct_interest_imported_data.xml',
         'views/company_tracking_views.xml',

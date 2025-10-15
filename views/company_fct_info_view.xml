@@ -21,7 +21,7 @@
         <field name="inherit_id" ref="view_company_info_form"/>
         <field name="arch" type="xml">
             <!-- Añadir la pestaña de Información FCT después de "Descripción y Notas" -->
-            <xpath expr="//page[@string='Descripción y Notas']" position="after">
+            <xpath expr="//notebook" position="inside">
                 <page string="Información FCT" attrs="{'invisible': [('representative', '=', False), ('tutor_fct', '=', False), ('activities', '=', False)]}">
                     <group string="Responsables FCT">
                         <group>
