@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Tree (Lista) de Seguimientos -->
+    <record id="view_company_tracking_tree" model="ir.ui.view">
+        <field name="name">company.tracking.tree</field>
+        <field name="model">company.tracking</field>
+        <field name="arch" type="xml">
+            <tree string="Seguimientos" decoration-success="outcome=='positive'" decoration-danger="outcome=='negative'" decoration-info="outcome=='pending'">
+                <field name="contact_date"/>
+                <field name="contact_time" widget="float_time"/>
+                <field name="company_name"/>
+                <field name="contact_type"/>
+                <field name="subject"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="outcome"/>
+                <field name="next_contact_date"/>
+                <field name="duration"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form (Formulario) de Seguimientos -->
+    <record id="view_company_tracking_form" model="ir.ui.view">
+        <field name="name">company.tracking.form</field>
+        <field name="model">company.tracking</field>
+        <field name="arch" type="xml">
+            <form string="Seguimiento de Contacto">
+                <sheet>
+                    <group>
+                        <group string="Información del Contacto">
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="contact_date"/>
+                            <field name="contact_time" widget="float_time"/>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <field name="contact_type"/>
+                            <field name="duration"/>
+                        </group>
+                        <group string="Resultado">
+                            <field name="outcome"/>
+                            <field name="next_contact_date"/>
+                            <field name="company_stage" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="subject" placeholder="Asunto del contacto"/>
+                    </group>
+                    <notebook>
+                        <page string="Temas Tratados">
+                            <field name="topics_discussed" placeholder="Describe los temas que se trataron durante el contacto..."/>
+                        </page>
+                        <page string="Próximas Acciones">
+                            <field name="next_action" placeholder="¿Qué acciones hay que realizar después de este contacto?"/>
+                        </page>
+                        <page string="Notas Adicionales">
+                            <field name="notes" placeholder="Notas, comentarios u observaciones..."/>
+                        </page>
+                        <page string="Documentos">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Search (Búsqueda y Filtros) de Seguimientos -->
+    <record id="view_company_tracking_search" model="ir.ui.view">
+        <field name="name">company.tracking.search</field>
+        <field name="model">company.tracking</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Seguimientos">
+                <field name="company_name" string="Empresa"/>
+                <field name="subject"/>
+                <field name="topics_discussed"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter string="Mis Seguimientos" name="my_trackings" domain="[('user_id', '=', uid)]"/>
+                <filter string="Hoy" name="today" domain="[('contact_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Esta Semana" name="this_week" 
+                        domain="[('contact_date', '&gt;=', (context_today() - relativedelta(weeks=1)).strftime('%Y-%m-%d')),
+                                 ('contact_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Este Mes" name="this_month" 
+                        domain="[('contact_date', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-%d')),
+                                 ('contact_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Resultado Positivo" name="outcome_positive" domain="[('outcome', '=', 'positive')]"/>
+                <filter string="Pendiente de Respuesta" name="outcome_pending" domain="[('outcome', '=', 'pending')]"/>
+                <separator/>
+                <filter string="Llamadas" name="type_call" domain="[('contact_type', '=', 'call')]"/>
+                <filter string="Reuniones" name="type_meeting" domain="[('contact_type', '=', 'meeting')]"/>
+                <filter string="Emails" name="type_email" domain="[('contact_type', '=', 'email')]"/>
+                <separator/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Empresa" name="group_company" context="{'group_by': 'company_id'}"/>
+                    <filter string="Responsable" name="group_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="Tipo de Contacto" name="group_type" context="{'group_by': 'contact_type'}"/>
+                    <filter string="Resultado" name="group_outcome" context="{'group_by': 'outcome'}"/>
+                    <filter string="Fecha" name="group_date" context="{'group_by': 'contact_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista Calendar de Seguimientos -->
+    <record id="view_company_tracking_calendar" model="ir.ui.view">
+        <field name="name">company.tracking.calendar</field>
+        <field name="model">company.tracking</field>
+        <field name="arch" type="xml">
+            <calendar string="Calendario de Seguimientos" date_start="contact_date" color="user_id" mode="month">
+                <field name="company_name"/>
+                <field name="subject"/>
+                <field name="user_id"/>
+                <field name="contact_type"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Vista Kanban de Seguimientos -->
+    <record id="view_company_tracking_kanban" model="ir.ui.view">
+        <field name="name">company.tracking.kanban</field>
+        <field name="model">company.tracking</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="company_name"/>
+                <field name="contact_date"/>
+                <field name="subject"/>
+                <field name="contact_type"/>
+                <field name="user_id"/>
+                <field name="outcome"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title"><field name="company_name"/></strong>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <field name="subject"/>
+                                <br/>
+                                <field name="contact_date"/>
+                                <field name="contact_type" widget="label_selection"/>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="outcome" widget="label_selection" options="{'classes': {'positive': 'success', 'negative': 'danger', 'pending': 'warning'}}"/>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para Seguimientos -->
+    <record id="action_company_tracking" model="ir.actions.act_window">
+        <field name="name">Seguimientos</field>
+        <field name="res_model">company.tracking</field>
+        <field name="view_mode">tree,kanban,form,calendar</field>
+        <field name="context">{'search_default_my_trackings': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primer seguimiento
+            </p>
+            <p>
+                Registra todos los contactos que realizas con las empresas para mantener un historial completo.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 
+    VISTA ADICIONAL PARA INFORMACIÓN FCT
+    
+    Este archivo contiene la pestaña de "Información FCT" que debe añadirse
+    DESPUÉS de actualizar el módulo por primera vez.
+    
+    INSTRUCCIONES:
+    1. Actualiza el módulo en Odoo (Apps > Gestión de Empresas FEOE > Actualizar)
+    2. Añade este archivo a __manifest__.py en la sección 'data':
+       'views/company_fct_info_view.xml',
+    3. Vuelve a actualizar el módulo
+    
+    Esta vista se añadirá automáticamente a la vista del formulario de empresas.
+    -->
+    
+    <record id="view_company_info_form_fct_inherited" model="ir.ui.view">
+        <field name="name">company.info.form.fct</field>
+        <field name="model">company.info</field>
+        <field name="inherit_id" ref="view_company_info_form"/>
+        <field name="arch" type="xml">
+            <!-- Añadir la pestaña de Información FCT después de "Descripción y Notas" -->
+            <xpath expr="//page[@string='Descripción y Notas']" position="after">
+                <page string="Información FCT" attrs="{'invisible': [('representative', '=', False), ('tutor_fct', '=', False), ('activities', '=', False)]}">
+                    <group string="Responsables FCT">
+                        <group>
+                            <field name="representative"/>
+                            <field name="representative_nif"/>
+                            <field name="rrhh_contact"/>
+                        </group>
+                        <group>
+                            <field name="tutor_fct"/>
+                            <field name="tutor_fct_nif"/>
+                            <field name="schedule"/>
+                        </group>
+                    </group>
+                    <group string="Actividades y Observaciones">
+                        <field name="activities" placeholder="Descripción de actividades que realizará el alumno..." nolabel="1"/>
+                    </group>
+                    <group string="Observaciones" attrs="{'invisible': [('observations', '=', False)]}">
+                        <field name="observations" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

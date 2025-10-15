@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Vista Tree de Teléfonos (para usar inline en company.info) -->
+    <record id="view_company_phone_tree" model="ir.ui.view">
+        <field name="name">company.phone.tree</field>
+        <field name="model">company.phone</field>
+        <field name="arch" type="xml">
+            <tree string="Teléfonos" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="phone" widget="phone"/>
+                <field name="phone_type"/>
+                <field name="note" optional="show"/>
+                <field name="active" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Vista Form de Teléfonos (por si se necesita editar independientemente) -->
+    <record id="view_company_phone_form" model="ir.ui.view">
+        <field name="name">company.phone.form</field>
+        <field name="model">company.phone</field>
+        <field name="arch" type="xml">
+            <form string="Teléfono">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="phone_type"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                            <field name="note" placeholder="Ej: Horario de 9 a 14h"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+</odoo>

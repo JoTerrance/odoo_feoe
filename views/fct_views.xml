@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Tree de Interés en FCT -->
+    <record id="view_company_fct_interest_tree" model="ir.ui.view">
+        <field name="name">company.fct.interest.tree</field>
+        <field name="model">company.fct.interest</field>
+        <field name="arch" type="xml">
+            <tree string="Interés en FCT" decoration-success="interested==True and knows_number==True" decoration-info="interested==True and knows_number==False" decoration-muted="interested==False">
+                <field name="company_name"/>
+                <field name="cycle_name"/>
+                <field name="course"/>
+                <field name="interested" widget="boolean_toggle"/>
+                <field name="knows_number" invisible="1"/>
+                <field name="num_students" string="Nº Alumnos"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form de Interés en FCT -->
+    <record id="view_company_fct_interest_form" model="ir.ui.view">
+        <field name="name">company.fct.interest.form</field>
+        <field name="model">company.fct.interest</field>
+        <field name="arch" type="xml">
+            <form string="Interés en FCT/Prácticas">
+                <sheet>
+                    <group>
+                        <group string="Ciclo y Curso">
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="cycle_id"/>
+                            <field name="course"/>
+                        </group>
+                        <group string="Interés">
+                            <field name="interested" widget="boolean_toggle"/>
+                            <field name="knows_number" attrs="{'invisible': [('interested', '=', False)]}"/>
+                            <field name="num_students" attrs="{'invisible': ['|', ('interested', '=', False), ('knows_number', '=', False)]}"/>
+                        </group>
+                    </group>
+                    <group string="Observaciones" attrs="{'invisible': [('interested', '=', False)]}">
+                        <field name="notes" placeholder="Información adicional sobre el interés de la empresa..." nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Search de Interés en FCT -->
+    <record id="view_company_fct_interest_search" model="ir.ui.view">
+        <field name="name">company.fct.interest.search</field>
+        <field name="model">company.fct.interest</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Interés en FCT">
+                <field name="company_name" string="Empresa"/>
+                <field name="cycle_name" string="Ciclo"/>
+                <separator/>
+                <filter string="Interesadas" name="interested" domain="[('interested', '=', True)]"/>
+                <filter string="No Interesadas" name="not_interested" domain="[('interested', '=', False)]"/>
+                <separator/>
+                <filter string="Conocen Número" name="knows_number" domain="[('knows_number', '=', True), ('interested', '=', True)]"/>
+                <filter string="No Conocen Número" name="not_knows_number" domain="[('knows_number', '=', False), ('interested', '=', True)]"/>
+                <separator/>
+                <filter string="1º Curso" name="course_1" domain="[('course', '=', '1')]"/>
+                <filter string="2º Curso" name="course_2" domain="[('course', '=', '2')]"/>
+                <filter string="DUAL INTENSIVA" name="course_dual" domain="[('course', '=', 'dual')]"/>
+                <separator/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Empresa" name="group_company" context="{'group_by': 'company_id'}"/>
+                    <filter string="Ciclo" name="group_cycle" context="{'group_by': 'cycle_id'}"/>
+                    <filter string="Curso" name="group_course" context="{'group_by': 'course'}"/>
+                    <filter string="Interesada" name="group_interested" context="{'group_by': 'interested'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista Pivot para análisis -->
+    <record id="view_company_fct_interest_pivot" model="ir.ui.view">
+        <field name="name">company.fct.interest.pivot</field>
+        <field name="model">company.fct.interest</field>
+        <field name="arch" type="xml">
+            <pivot string="Análisis de Interés en FCT">
+                <field name="cycle_id" type="row"/>
+                <field name="course" type="col"/>
+                <field name="num_students" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Vista Graph para gráficos -->
+    <record id="view_company_fct_interest_graph" model="ir.ui.view">
+        <field name="name">company.fct.interest.graph</field>
+        <field name="model">company.fct.interest</field>
+        <field name="arch" type="xml">
+            <graph string="Gráfico de Interés en FCT" type="bar">
+                <field name="cycle_id"/>
+                <field name="num_students" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para Interés en FCT -->
+    <record id="action_company_fct_interest" model="ir.actions.act_window">
+        <field name="name">Interés en FCT/Prácticas</field>
+        <field name="res_model">company.fct.interest</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="context">{'search_default_interested': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Registra el interés de las empresas en FCT
+            </p>
+            <p>
+                Indica qué empresas están interesadas en acoger alumnos para prácticas FCT,
+                especificando el ciclo formativo, curso y número de alumnos.
+            </p>
+        </field>
+    </record>
+
+    <!-- Vista Tree de Ciclos Formativos -->
+    <record id="view_education_cycle_tree" model="ir.ui.view">
+        <field name="name">education.cycle.tree</field>
+        <field name="model">education.cycle</field>
+        <field name="arch" type="xml">
+            <tree string="Ciclos Formativos">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="level"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form de Ciclos Formativos -->
+    <record id="view_education_cycle_form" model="ir.ui.view">
+        <field name="name">education.cycle.form</field>
+        <field name="model">education.cycle</field>
+        <field name="arch" type="xml">
+            <form string="Ciclo Formativo">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="level"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Descripción">
+                        <field name="description" nolabel="1" placeholder="Descripción del ciclo formativo..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para Ciclos Formativos -->
+    <record id="action_education_cycle" model="ir.actions.act_window">
+        <field name="name">Ciclos Formativos</field>
+        <field name="res_model">education.cycle</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea un ciclo formativo
+            </p>
+            <p>
+                Define los ciclos formativos disponibles en el centro educativo.
+            </p>
+        </field>
+    </record>
+</odoo>

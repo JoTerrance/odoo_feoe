@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menú Principal -->
+    <menuitem id="menu_company_management_root" 
+              name="Gestión Empresas" 
+              sequence="10"
+              web_icon="odoo_feoe,static/description/icon.png"/>
+
+    <!-- Menú Empresas -->
+    <menuitem id="menu_company_info" 
+              name="Empresas" 
+              parent="menu_company_management_root" 
+              action="action_company_info" 
+              sequence="10"/>
+
+    <!-- Menú Seguimientos -->
+    <menuitem id="menu_company_tracking" 
+              name="Seguimientos" 
+              parent="menu_company_management_root" 
+              action="action_company_tracking" 
+              sequence="20"/>
+
+    <!-- Submenú de FCT/Prácticas -->
+    <menuitem id="menu_fct_root" 
+              name="FCT/Prácticas" 
+              parent="menu_company_management_root" 
+              sequence="30"/>
+
+    <menuitem id="menu_company_fct_interest" 
+              name="Interés en FCT" 
+              parent="menu_fct_root" 
+              action="action_company_fct_interest" 
+              sequence="10"/>
+
+    <menuitem id="menu_education_cycle" 
+              name="Ciclos Formativos" 
+              parent="menu_fct_root" 
+              action="action_education_cycle" 
+              sequence="20"/>
+
+    <!-- Submenú de Reportes (para futura expansión) -->
+    <menuitem id="menu_company_reports" 
+              name="Reportes" 
+              parent="menu_company_management_root" 
+              sequence="100"/>
+</odoo>

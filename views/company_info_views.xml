@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Tree (Lista) de Empresas -->
+    <record id="view_company_info_tree" model="ir.ui.view">
+        <field name="name">company.info.tree</field>
+        <field name="model">company.info</field>
+        <field name="arch" type="xml">
+            <tree string="Empresas" decoration-success="stage=='won'" decoration-info="stage=='contacted'" decoration-muted="stage=='lost'">
+                <field name="name"/>
+                <field name="cif"/>
+                <field name="city"/>
+                <field name="sector"/>
+                <field name="contact_person"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="stage"/>
+                <field name="priority" widget="priority"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="tracking_count"/>
+                <field name="last_contact_date"/>
+                <field name="next_contact_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form (Formulario) de Empresas -->
+    <record id="view_company_info_form" model="ir.ui.view">
+        <field name="name">company.info.form</field>
+        <field name="model">company.info</field>
+        <field name="arch" type="xml">
+            <form string="Empresa">
+                <header>
+                    <field name="stage" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_trackings" type="object" class="oe_stat_button" icon="fa-history">
+                            <field name="tracking_count" widget="statinfo" string="Seguimientos"/>
+                        </button>
+                        <button name="action_view_fct_interests" type="object" class="oe_stat_button" icon="fa-graduation-cap">
+                            <field name="fct_interest_count" widget="statinfo" string="Interés FCT"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archivada" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Nombre de la Empresa"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Información General">
+                            <field name="cif"/>
+                            <field name="sector"/>
+                            <field name="num_employees"/>
+                            <field name="annual_revenue" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="priority" widget="priority"/>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Contacto Principal">
+                            <field name="contact_person"/>
+                            <field name="contact_position"/>
+                            <field name="contact_email" widget="email"/>
+                            <field name="contact_phone" widget="phone"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Datos de Contacto">
+                            <field name="phone" widget="phone"/>
+                            <field name="mobile" widget="phone"/>
+                            <field name="email" widget="email"/>
+                            <field name="website" widget="url"/>
+                        </group>
+                        <group string="Seguimiento">
+                            <field name="last_contact_date"/>
+                            <field name="next_contact_date"/>
+                        </group>
+                    </group>
+                    <group string="Teléfonos Adicionales">
+                        <field name="phone_ids" nolabel="1" colspan="2">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="phone" widget="phone"/>
+                                <field name="phone_type"/>
+                                <field name="note" optional="show"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group string="Dirección">
+                        <group>
+                            <field name="street" placeholder="Calle..."/>
+                            <field name="street2" placeholder="Calle 2..."/>
+                            <field name="city" placeholder="Ciudad"/>
+                        </group>
+                        <group>
+                            <field name="state_id" placeholder="Provincia"/>
+                            <field name="zip" placeholder="Código Postal"/>
+                            <field name="country_id" placeholder="País"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Descripción y Notas">
+                            <field name="description" placeholder="Notas sobre la empresa..."/>
+                        </page>
+                        <page string="Seguimientos">
+                            <field name="tracking_ids">
+                                <tree>
+                                    <field name="contact_date"/>
+                                    <field name="contact_time" widget="float_time"/>
+                                    <field name="contact_type"/>
+                                    <field name="subject"/>
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                    <field name="outcome"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Interés en FCT/Prácticas">
+                            <field name="fct_interest_ids">
+                                <tree editable="bottom">
+                                    <field name="cycle_id"/>
+                                    <field name="course"/>
+                                    <field name="interested" widget="boolean_toggle"/>
+                                    <field name="knows_number" attrs="{'invisible': [('interested', '=', False)]}"/>
+                                    <field name="num_students" attrs="{'invisible': ['|', ('interested', '=', False), ('knows_number', '=', False)]}"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Search (Búsqueda y Filtros) de Empresas -->
+    <record id="view_company_info_search" model="ir.ui.view">
+        <field name="name">company.info.search</field>
+        <field name="model">company.info</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Empresas">
+                <field name="name" string="Empresa" filter_domain="['|', ('name', 'ilike', self), ('cif', 'ilike', self)]"/>
+                <field name="city"/>
+                <field name="sector"/>
+                <field name="contact_person"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter string="Mis Empresas" name="my_companies" domain="[('user_id', '=', uid)]"/>
+                <filter string="Activas" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archivadas" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Nuevas" name="stage_new" domain="[('stage', '=', 'new')]"/>
+                <filter string="Contactadas" name="stage_contacted" domain="[('stage', '=', 'contacted')]"/>
+                <filter string="Interesadas" name="stage_interested" domain="[('stage', '=', 'interested')]"/>
+                <filter string="Clientes" name="stage_won" domain="[('stage', '=', 'won')]"/>
+                <separator/>
+                <filter string="Próximo contacto esta semana" name="next_contact_week" 
+                        domain="[('next_contact_date', '&gt;=', (context_today()).strftime('%Y-%m-%d')), 
+                                 ('next_contact_date', '&lt;=', (context_today() + relativedelta(weeks=1)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Sin contacto reciente" name="no_recent_contact" 
+                        domain="['|', ('last_contact_date', '=', False), 
+                                     ('last_contact_date', '&lt;', (context_today() - relativedelta(months=1)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Estado" name="group_stage" context="{'group_by': 'stage'}"/>
+                    <filter string="Responsable" name="group_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="Ciudad" name="group_city" context="{'group_by': 'city'}"/>
+                    <filter string="Sector" name="group_sector" context="{'group_by': 'sector'}"/>
+                    <filter string="Prioridad" name="group_priority" context="{'group_by': 'priority'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista Kanban de Empresas -->
+    <record id="view_company_info_kanban" model="ir.ui.view">
+        <field name="name">company.info.kanban</field>
+        <field name="model">company.info</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="city"/>
+                <field name="contact_person"/>
+                <field name="phone"/>
+                <field name="stage"/>
+                <field name="priority"/>
+                <field name="user_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                </div>
+                                <field name="priority" widget="priority"/>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <field name="contact_person"/>
+                                <br/>
+                                <field name="city"/>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="stage" widget="label_selection" options="{'classes': {'new': 'info', 'won': 'success', 'lost': 'danger'}}"/>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para Empresas -->
+    <record id="action_company_info" model="ir.actions.act_window">
+        <field name="name">Empresas</field>
+        <field name="res_model">company.info</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="context">{'search_default_active': 1, 'search_default_my_companies': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primera empresa
+            </p>
+            <p>
+                Registra información completa de empresas para prospección y seguimiento.
+            </p>
+        </field>
+    </record>
+</odoo>
