@@ -7,3 +7,5 @@ access_company_info_public,company.info.public,model_company_info,base.group_pub
 access_company_tracking_public,company.tracking.public,model_company_tracking,base.group_public,1,0,0,0
 access_company_fct_interest_public,company.fct.interest.public,model_company_fct_interest,base.group_public,1,0,0,0
 access_education_cycle_public,education.cycle.public,model_education_cycle,base.group_public,1,0,0,0
+access_company_phone_user,company.phone.user,model_company_phone,base.group_user,1,1,1,1
+access_company_phone_public,company.phone.public,model_company_phone,base.group_public,1,0,0,0
