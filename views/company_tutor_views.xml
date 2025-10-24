@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de formulario para tutores -->
+    <record id="view_company_tutor_form" model="ir.ui.view">
+        <field name="name">company.tutor.form</field>
+        <field name="model">company.tutor</field>
+        <field name="arch" type="xml">
+            <form string="Tutor de Empresa">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Nombre completo del tutor"/>
+                            <field name="dni" placeholder="DNI/NIF"/>
+                            <field name="company_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="position" placeholder="Cargo o puesto"/>
+                            <field name="phone" widget="phone" placeholder="Teléfono"/>
+                            <field name="email" widget="email" placeholder="Email"/>
+                            <field name="schedule" placeholder="Ej: L-V 9:00-14:00"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Centros de Trabajo Asignados">
+                            <field name="workplace_ids" widget="many2many">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="city"/>
+                                    <field name="phone"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <page string="Observaciones">
+                            <field name="observations" placeholder="Observaciones adicionales sobre este tutor..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de árbol para tutores -->
+    <record id="view_company_tutor_tree" model="ir.ui.view">
+        <field name="name">company.tutor.tree</field>
+        <field name="model">company.tutor</field>
+        <field name="arch" type="xml">
+            <tree string="Tutores">
+                <field name="name"/>
+                <field name="dni"/>
+                <field name="company_id"/>
+                <field name="position"/>
+                <field name="phone" widget="phone"/>
+                <field name="email" widget="email"/>
+                <field name="schedule"/>
+                <field name="workplace_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda para tutores -->
+    <record id="view_company_tutor_search" model="ir.ui.view">
+        <field name="name">company.tutor.search</field>
+        <field name="model">company.tutor</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Tutores">
+                <field name="name"/>
+                <field name="dni"/>
+                <field name="company_id"/>
+                <field name="workplace_ids"/>
+                <filter string="Activos" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archivados" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Empresa" name="group_company" context="{'group_by': 'company_id'}"/>
+                    <filter string="Cargo" name="group_position" context="{'group_by': 'position'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción para tutores -->
+    <record id="action_company_tutor" model="ir.actions.act_window">
+        <field name="name">Tutores</field>
+        <field name="res_model">company.tutor</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear un nuevo tutor
+            </p>
+            <p>
+                Registra los tutores de las empresas y asígnalos a centros de trabajo.
+            </p>
+        </field>
+    </record>
+</odoo>

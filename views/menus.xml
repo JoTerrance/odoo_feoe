@@ -20,6 +20,20 @@
               action="action_company_tracking" 
               sequence="20"/>
 
+    <!-- Menú Centros de Trabajo -->
+    <menuitem id="menu_company_workplace" 
+              name="Centros de Trabajo" 
+              parent="menu_company_management_root" 
+              action="action_company_workplace" 
+              sequence="25"/>
+
+    <!-- Menú Tutores -->
+    <menuitem id="menu_company_tutor" 
+              name="Tutores" 
+              parent="menu_company_management_root" 
+              action="action_company_tutor" 
+              sequence="27"/>
+
     <!-- Submenú de FCT/Prácticas -->
     <menuitem id="menu_fct_root" 
               name="FCT/Prácticas" 

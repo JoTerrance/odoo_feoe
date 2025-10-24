@@ -54,10 +54,16 @@ class CompanyInfo(models.Model):
     tutor_fct_nif = fields.Char(string='NIF Tutor FCT', tracking=True)
     rrhh_contact = fields.Char(string='Contacto RRHH', tracking=True,
                                help='Nombre del responsable de Recursos Humanos')
+    rrhh_email = fields.Char(string='Email RRHH', tracking=True)
+    rrhh_phone = fields.Char(string='Teléfono RRHH', tracking=True)
     activities = fields.Text(string='Actividades a Realizar',
                             help='Descripción de actividades que realizará el alumno en prácticas')
     schedule = fields.Char(string='Horario', tracking=True,
                           help='Horario de las prácticas FCT')
+    company_schedule = fields.Char(string='Horario Empresa', tracking=True,
+                                   help='Horario de trabajo de la empresa')
+    student_schedule = fields.Char(string='Horario Alumnos', tracking=True,
+                                   help='Horario para los alumnos en prácticas')
     observations = fields.Text(string='Observaciones',
                               help='Observaciones adicionales sobre las prácticas o la empresa')
     
@@ -94,6 +100,12 @@ class CompanyInfo(models.Model):
     fct_interest_ids = fields.One2many('company.fct.interest', 'company_id', string='Interés en FCT')
     fct_interest_count = fields.Integer(string='Ciclos con Interés', compute='_compute_fct_interest_count')
     
+    # Relación con centros de trabajo y tutores
+    workplace_ids = fields.One2many('company.workplace', 'company_id', string='Centros de Trabajo')
+    workplace_count = fields.Integer(string='Número de Centros', compute='_compute_workplace_count')
+    tutor_ids = fields.One2many('company.tutor', 'company_id', string='Tutores')
+    tutor_count = fields.Integer(string='Número de Tutores', compute='_compute_tutor_count')
+    
     # Fechas
     next_contact_date = fields.Date(string='Próximo Contacto', tracking=True)
     last_contact_date = fields.Date(string='Último Contacto', compute='_compute_last_contact_date', store=True)
@@ -116,6 +128,16 @@ class CompanyInfo(models.Model):
         for record in self:
             record.fct_interest_count = len(record.fct_interest_ids.filtered('interested'))
     
+    @api.depends('workplace_ids')
+    def _compute_workplace_count(self):
+        for record in self:
+            record.workplace_count = len(record.workplace_ids)
+    
+    @api.depends('tutor_ids')
+    def _compute_tutor_count(self):
+        for record in self:
+            record.tutor_count = len(record.tutor_ids)
+    
     def action_view_trackings(self):
         """Acción para ver todos los seguimientos de esta empresa"""
         self.ensure_one()
@@ -135,6 +157,30 @@ class CompanyInfo(models.Model):
             'name': 'Interés en FCT/Prácticas',
             'type': 'ir.actions.act_window',
             'res_model': 'company.fct.interest',
+            'view_mode': 'tree,form',
+            'domain': [('company_id', '=', self.id)],
+            'context': {'default_company_id': self.id},
+        }
+    
+    def action_view_workplaces(self):
+        """Acción para ver todos los centros de trabajo de esta empresa"""
+        self.ensure_one()
+        return {
+            'name': 'Centros de Trabajo',
+            'type': 'ir.actions.act_window',
+            'res_model': 'company.workplace',
+            'view_mode': 'tree,form',
+            'domain': [('company_id', '=', self.id)],
+            'context': {'default_company_id': self.id},
+        }
+    
+    def action_view_tutors(self):
+        """Acción para ver todos los tutores de esta empresa"""
+        self.ensure_one()
+        return {
+            'name': 'Tutores',
+            'type': 'ir.actions.act_window',
+            'res_model': 'company.tutor',
             'view_mode': 'tree,form',
             'domain': [('company_id', '=', self.id)],
             'context': {'default_company_id': self.id},

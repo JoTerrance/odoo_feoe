@@ -27,12 +27,27 @@
                         <group>
                             <field name="representative"/>
                             <field name="representative_nif"/>
-                            <field name="rrhh_contact"/>
                         </group>
                         <group>
                             <field name="tutor_fct"/>
                             <field name="tutor_fct_nif"/>
-                            <field name="schedule"/>
+                        </group>
+                    </group>
+                    <group string="Recursos Humanos">
+                        <group>
+                            <field name="rrhh_contact"/>
+                            <field name="rrhh_email" widget="email"/>
+                        </group>
+                        <group>
+                            <field name="rrhh_phone" widget="phone"/>
+                        </group>
+                    </group>
+                    <group string="Horarios">
+                        <group>
+                            <field name="company_schedule" placeholder="Ej: L-V 8:00-17:00"/>
+                        </group>
+                        <group>
+                            <field name="student_schedule" placeholder="Ej: L-V 8:00-14:00"/>
                         </group>
                     </group>
                     <group string="Actividades y Observaciones">

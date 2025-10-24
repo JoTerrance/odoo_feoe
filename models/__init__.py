@@ -5,3 +5,5 @@ from . import company_phone
 from . import company_tracking
 from . import education_cycle
 from . import company_fct_interest
+from . import company_workplace
+from . import company_tutor

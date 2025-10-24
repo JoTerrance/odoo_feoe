@@ -40,6 +40,12 @@
                         <button name="action_view_fct_interests" type="object" class="oe_stat_button" icon="fa-graduation-cap">
                             <field name="fct_interest_count" widget="statinfo" string="Interés FCT"/>
                         </button>
+                        <button name="action_view_workplaces" type="object" class="oe_stat_button" icon="fa-building">
+                            <field name="workplace_count" widget="statinfo" string="Centros"/>
+                        </button>
+                        <button name="action_view_tutors" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="tutor_count" widget="statinfo" string="Tutores"/>
+                        </button>
                     </div>
                     <widget name="web_ribbon" title="Archivada" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
@@ -103,6 +109,33 @@
                     <notebook>
                         <page string="Descripción y Notas">
                             <field name="description" placeholder="Notas sobre la empresa..."/>
+                        </page>
+                        <page string="Centros de Trabajo">
+                            <field name="workplace_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="city"/>
+                                    <field name="phone" widget="phone"/>
+                                    <field name="email" widget="email"/>
+                                    <field name="company_schedule"/>
+                                    <field name="student_schedule"/>
+                                    <field name="tutor_ids" widget="many2many_tags"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Tutores">
+                            <field name="tutor_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="dni"/>
+                                    <field name="position"/>
+                                    <field name="phone" widget="phone"/>
+                                    <field name="email" widget="email"/>
+                                    <field name="schedule"/>
+                                    <field name="workplace_ids" widget="many2many_tags"/>
+                                </tree>
+                            </field>
                         </page>
                         <page string="Seguimientos">
                             <field name="tracking_ids">
