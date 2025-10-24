@@ -20,6 +20,15 @@ class CompanyFCTInterest(models.Model):
         ('dual', 'DUAL INTENSIVA'),
     ], string='Curso', required=True)
     
+    # Convocatoria y año
+    call = fields.Selection([
+        ('first', 'Primera Convocatoria'),
+        ('second', 'Segunda Convocatoria'),
+    ], string='Convocatoria', required=True, default='first')
+    
+    year = fields.Integer(string='Año', required=True, default=lambda self: fields.Date.today().year,
+                         help='Año en el que se mostró el interés')
+    
     # Interés
     interested = fields.Boolean(string='Interesada en Acoger Alumnos', default=True)
     
@@ -58,7 +67,9 @@ class CompanyFCTInterest(models.Model):
         """Personaliza el nombre mostrado del registro"""
         result = []
         for record in self:
-            name = f"{record.cycle_id.code} - {record.course}"
+            name = f"{record.cycle_id.code} - {record.course} - {record.year}"
+            if record.call == 'second':
+                name += " (2ª Conv)"
             if record.interested:
                 if record.knows_number and record.num_students > 0:
                     name += f" ({record.num_students} alumnos)"
@@ -70,7 +81,7 @@ class CompanyFCTInterest(models.Model):
         return result
     
     _sql_constraints = [
-        ('company_cycle_course_unique', 
-         'unique(company_id, cycle_id, course)', 
-         'Ya existe un registro para esta empresa, ciclo y curso.'),
+        ('company_cycle_course_call_year_unique', 
+         'unique(company_id, cycle_id, course, call, year)', 
+         'Ya existe un registro para esta empresa, ciclo, curso, convocatoria y año.'),
     ]

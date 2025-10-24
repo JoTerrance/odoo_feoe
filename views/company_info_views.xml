@@ -154,6 +154,8 @@
                                 <tree editable="bottom">
                                     <field name="cycle_id"/>
                                     <field name="course"/>
+                                    <field name="year"/>
+                                    <field name="call"/>
                                     <field name="interested" widget="boolean_toggle"/>
                                     <field name="knows_number" attrs="{'invisible': [('interested', '=', False)]}"/>
                                     <field name="num_students" attrs="{'invisible': ['|', ('interested', '=', False), ('knows_number', '=', False)]}"/>

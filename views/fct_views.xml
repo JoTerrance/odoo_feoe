@@ -9,6 +9,8 @@
                 <field name="company_name"/>
                 <field name="cycle_name"/>
                 <field name="course"/>
+                <field name="year"/>
+                <field name="call"/>
                 <field name="interested" widget="boolean_toggle"/>
                 <field name="knows_number" invisible="1"/>
                 <field name="num_students" string="Nº Alumnos"/>
@@ -30,6 +32,12 @@
                             <field name="cycle_id"/>
                             <field name="course"/>
                         </group>
+                        <group string="Convocatoria y Año">
+                            <field name="year"/>
+                            <field name="call"/>
+                        </group>
+                    </group>
+                    <group>
                         <group string="Interés">
                             <field name="interested" widget="boolean_toggle"/>
                             <field name="knows_number" attrs="{'invisible': [('interested', '=', False)]}"/>
@@ -63,10 +71,15 @@
                 <filter string="2º Curso" name="course_2" domain="[('course', '=', '2')]"/>
                 <filter string="DUAL INTENSIVA" name="course_dual" domain="[('course', '=', 'dual')]"/>
                 <separator/>
+                <filter string="Primera Convocatoria" name="call_first" domain="[('call', '=', 'first')]"/>
+                <filter string="Segunda Convocatoria" name="call_second" domain="[('call', '=', 'second')]"/>
+                <separator/>
                 <group expand="0" string="Agrupar Por">
                     <filter string="Empresa" name="group_company" context="{'group_by': 'company_id'}"/>
                     <filter string="Ciclo" name="group_cycle" context="{'group_by': 'cycle_id'}"/>
                     <filter string="Curso" name="group_course" context="{'group_by': 'course'}"/>
+                    <filter string="Convocatoria" name="group_call" context="{'group_by': 'call'}"/>
+                    <filter string="Año" name="group_year" context="{'group_by': 'year'}"/>
                     <filter string="Interesada" name="group_interested" context="{'group_by': 'interested'}"/>
                 </group>
             </search>
