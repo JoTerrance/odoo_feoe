@@ -114,7 +114,7 @@ Modelo para registrar seguimientos de contactos.
 
 ## Versión
 
-- **Versión**: 0.1
+- **Versión**: 1.1
 - **Compatible con**: Odoo 15.0+
 
 ## Licencia
