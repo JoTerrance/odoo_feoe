@@ -1,5 +1,7 @@
 # Gestión de Empresas FEOE
 
+![Tests](https://github.com/JoTerrance/odoo_feoe/workflows/Odoo%20Tests/badge.svg)
+
 Módulo de Odoo para la gestión completa de empresas y seguimiento de contactos.
 
 ## Características
@@ -111,6 +113,47 @@ Modelo para registrar seguimientos de contactos.
 
 - `base`: Módulo base de Odoo
 - `mail`: Para funcionalidades de chatter y seguimiento
+
+## Tests
+
+El módulo incluye tests unitarios completos para todos los modelos:
+
+### Estructura de Tests
+
+```
+tests/
+├── __init__.py
+├── test_company_info.py        # Tests para el modelo de empresas
+├── test_company_tracking.py    # Tests para seguimientos
+├── test_education_cycle.py     # Tests para ciclos formativos
+├── test_company_fct_interest.py # Tests para interés en FCT
+├── test_company_workplace.py   # Tests para centros de trabajo
+├── test_company_tutor.py       # Tests para tutores
+└── test_company_phone.py       # Tests para teléfonos
+```
+
+### Ejecutar Tests Localmente
+
+Para ejecutar los tests localmente, necesitas tener Odoo instalado:
+
+```bash
+# Opción 1: Ejecutar todos los tests del módulo
+odoo-bin -c odoo.conf -d test_db -u odoo_feoe --test-enable --stop-after-init
+
+# Opción 2: Ejecutar tests con cobertura
+coverage run --source=odoo_feoe odoo-bin -c odoo.conf -d test_db -u odoo_feoe --test-enable --stop-after-init
+coverage report
+```
+
+### Integración Continua
+
+El módulo incluye integración con GitHub Actions que:
+- Ejecuta automáticamente todos los tests en cada push y pull request
+- Genera reportes de cobertura de código
+- Verifica la compatibilidad con Odoo 15.0
+- Usa PostgreSQL 13 para tests de base de datos
+
+El workflow se ejecuta automáticamente en las ramas `main`, `master` y `develop`.
 
 ## Versión
 
