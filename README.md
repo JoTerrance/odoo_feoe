@@ -1,6 +1,6 @@
 # Gestión de Empresas FEOE
 
-![Tests](https://github.com/JoTerrance/odoo_feoe/workflows/Odoo%20Tests/badge.svg)
+![Tests](https://github.com/JoTerrance/odoo_feoe/actions/workflows/tests.yml/badge.svg)
 
 Módulo de Odoo para la gestión completa de empresas y seguimiento de contactos.
 
