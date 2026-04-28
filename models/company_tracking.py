@@ -65,10 +65,8 @@ class CompanyTracking(models.Model):
             # Esto se actualizará automáticamente mediante el compute en company.info
             pass
     
-    def name_get(self):
+    @api.depends('company_id', 'company_id.name', 'contact_date', 'subject')
+    def _compute_display_name(self):
         """Personaliza el nombre mostrado del registro"""
-        result = []
         for record in self:
-            name = f"{record.company_id.name} - {record.contact_date} - {record.subject}"
-            result.append((record.id, name))
-        return result
+            record.display_name = f"{record.company_id.name} - {record.contact_date} - {record.subject}"

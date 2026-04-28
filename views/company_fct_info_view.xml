@@ -22,7 +22,7 @@
         <field name="arch" type="xml">
             <!-- Añadir la pestaña de Información FCT después de "Descripción y Notas" -->
             <xpath expr="//notebook" position="inside">
-                <page string="Información FCT" attrs="{'invisible': [('representative', '=', False), ('tutor_fct', '=', False), ('activities', '=', False)]}">
+                <page string="Información FCT" invisible="[('representative', '=', False), ('tutor_fct', '=', False), ('activities', '=', False)]">
                     <group string="Responsables FCT">
                         <group>
                             <field name="representative"/>
@@ -53,7 +53,7 @@
                     <group string="Actividades y Observaciones">
                         <field name="activities" placeholder="Descripción de actividades que realizará el alumno..." nolabel="1"/>
                     </group>
-                    <group string="Observaciones" attrs="{'invisible': [('observations', '=', False)]}">
+                    <group string="Observaciones" invisible="[('observations', '=', False)]">
                         <field name="observations" nolabel="1"/>
                     </group>
                 </page>
