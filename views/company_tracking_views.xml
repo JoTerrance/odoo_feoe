@@ -55,7 +55,7 @@
                             <field name="notes" placeholder="Notas, comentarios u observaciones..."/>
                         </page>
                         <page string="Documentos">
-                            <field name="attachment_ids" widget="many2many_binary"/>
+                            <field name="attachment_ids" widget="many2many_attachments"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -133,7 +133,7 @@
                 <field name="user_id"/>
                 <field name="outcome"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="kanban-card">
                         <div class="oe_kanban_global_click">
                             <div class="o_kanban_record_top">
                                 <div class="o_kanban_record_headings">
@@ -144,11 +144,11 @@
                                 <field name="subject"/>
                                 <br/>
                                 <field name="contact_date"/>
-                                <field name="contact_type" widget="label_selection"/>
+                                <field name="contact_type" widget="badge"/>
                             </div>
                             <div class="o_kanban_record_bottom">
                                 <div class="oe_kanban_bottom_left">
-                                    <field name="outcome" widget="label_selection" options="{'classes': {'positive': 'success', 'negative': 'danger', 'pending': 'warning'}}"/>
+                                    <field name="outcome" widget="badge" options="{'classes': {'positive': 'success', 'negative': 'danger', 'pending': 'warning'}}"/>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
                                     <field name="user_id" widget="many2one_avatar_user"/>

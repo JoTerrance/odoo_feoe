@@ -40,11 +40,9 @@ class CompanyWorkplace(models.Model):
     active = fields.Boolean(string='Activo', default=True)
     
     @api.depends('name', 'city')
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for record in self:
             name = record.name
             if record.city:
                 name = f"{name} ({record.city})"
-            result.append((record.id, name))
-        return result
+            record.display_name = name

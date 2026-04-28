@@ -40,11 +40,11 @@
                     <group>
                         <group string="Interés">
                             <field name="interested" widget="boolean_toggle"/>
-                            <field name="knows_number" attrs="{'invisible': [('interested', '=', False)]}"/>
-                            <field name="num_students" attrs="{'invisible': ['|', ('interested', '=', False), ('knows_number', '=', False)]}"/>
+                            <field name="knows_number" invisible="[('interested', '=', False)]"/>
+                            <field name="num_students" invisible="['|', ('interested', '=', False), ('knows_number', '=', False)]"/>
                         </group>
                     </group>
-                    <group string="Observaciones" attrs="{'invisible': [('interested', '=', False)]}">
+                    <group string="Observaciones" invisible="[('interested', '=', False)]">
                         <field name="notes" placeholder="Información adicional sobre el interés de la empresa..." nolabel="1"/>
                     </group>
                 </sheet>

@@ -51,11 +51,8 @@ class CompanyPhone(models.Model):
          'Este teléfono ya está registrado para esta empresa!')
     ]
     
-    def name_get(self):
+    def _compute_display_name(self):
         """Muestra el teléfono con su tipo"""
-        result = []
         for record in self:
             type_label = dict(self._fields['phone_type'].selection).get(record.phone_type, '')
-            name = f"{record.phone} ({type_label})"
-            result.append((record.id, name))
-        return result
+            record.display_name = f"{record.phone} ({type_label})"

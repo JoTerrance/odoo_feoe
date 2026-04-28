@@ -47,9 +47,9 @@
                             <field name="tutor_count" widget="statinfo" string="Tutores"/>
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archivada" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archivada" bg_color="bg-danger" invisible="[('active', '=', True)]"/>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
+                        <label for="name"/>
                         <h1>
                             <field name="name" placeholder="Nombre de la Empresa"/>
                         </h1>
@@ -157,8 +157,8 @@
                                     <field name="year"/>
                                     <field name="call"/>
                                     <field name="interested" widget="boolean_toggle"/>
-                                    <field name="knows_number" attrs="{'invisible': [('interested', '=', False)]}"/>
-                                    <field name="num_students" attrs="{'invisible': ['|', ('interested', '=', False), ('knows_number', '=', False)]}"/>
+                                    <field name="knows_number" invisible="[('interested', '=', False)]"/>
+                                    <field name="num_students" invisible="['|', ('interested', '=', False), ('knows_number', '=', False)]"/>
                                     <field name="notes"/>
                                 </tree>
                             </field>
@@ -227,7 +227,7 @@
                 <field name="priority"/>
                 <field name="user_id"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="kanban-card">
                         <div class="oe_kanban_global_click">
                             <div class="o_kanban_record_top">
                                 <div class="o_kanban_record_headings">
@@ -242,7 +242,7 @@
                             </div>
                             <div class="o_kanban_record_bottom">
                                 <div class="oe_kanban_bottom_left">
-                                    <field name="stage" widget="label_selection" options="{'classes': {'new': 'info', 'won': 'success', 'lost': 'danger'}}"/>
+                                    <field name="stage" widget="badge" options="{'classes': {'new': 'info', 'won': 'success', 'lost': 'danger'}}"/>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
                                     <field name="user_id" widget="many2one_avatar_user"/>
