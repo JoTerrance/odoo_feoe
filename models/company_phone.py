@@ -51,6 +51,7 @@ class CompanyPhone(models.Model):
          'Este teléfono ya está registrado para esta empresa!')
     ]
     
+    @api.depends('phone', 'phone_type')
     def _compute_display_name(self):
         """Muestra el teléfono con su tipo"""
         for record in self:

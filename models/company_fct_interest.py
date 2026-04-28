@@ -63,8 +63,8 @@ class CompanyFCTInterest(models.Model):
             self.knows_number = False
             self.num_students = 0
     
+    @api.depends('cycle_id', 'cycle_id.code', 'course', 'year', 'call', 'interested', 'knows_number', 'num_students')
     def _compute_display_name(self):
-        """Personaliza el nombre mostrado del registro"""
         for record in self:
             name = f"{record.cycle_id.code} - {record.course} - {record.year}"
             if record.call == 'second':
